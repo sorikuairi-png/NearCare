@@ -52,3 +52,8 @@
 - Do not stop after one screenshot pass
 - Do not use `transition-all`
 - Do not use default Tailwind blue/indigo as primary color
+
+## Deployment Workflow
+- This project syncs to GitHub, and GitHub is connected to Vercel — any push to GitHub auto-deploys to Vercel.
+- **Default to local-only changes.** Test all work on localhost (see Local Server / Screenshot Workflow above).
+- **Never `git commit` or `git push` unless the user explicitly tells you to** ("push this", "commit this", "deploy this," etc.). Do not commit/push just because a change is finished or verified — wait for explicit instruction every time.

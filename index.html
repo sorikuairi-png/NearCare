@@ -163,6 +163,30 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
   }
+
+  /* ---- "Free For Families" badge: bright, contained glow + pulsing dot ---- */
+  .badge-free {
+    background: linear-gradient(135deg, rgba(194,226,161,0.28), rgba(194,226,161,0.08));
+    border: 1px solid rgba(194,226,161,0.55);
+    box-shadow:
+      0 1px 1px rgba(1,43,40,0.15),
+      0 0 22px -4px rgba(194,226,161,0.55),
+      0 10px 22px -12px rgba(194,226,161,0.4);
+  }
+  .badge-free .dot-ping {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: #c2e2a1;
+    animation: dotPing 2.2s cubic-bezier(0,0,0.2,1) infinite;
+  }
+  @keyframes dotPing {
+    0% { transform: scale(1); opacity: 0.8; }
+    75%, 100% { transform: scale(3); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .badge-free .dot-ping { animation: none; opacity: 0; }
+  }
 </style>
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 </head>
@@ -234,10 +258,15 @@
       <!-- Hero content -->
       <div class="grid lg:grid-cols-2 gap-12 items-center pt-8 pb-20">
         <div class="reveal">
-          <span class="inline-flex items-center gap-2 text-[13px] font-semibold text-lime-300 bg-white/10 border border-white/15 rounded-full px-4 py-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-lime-400"></span>
-            Free For Families, Always
-          </span>
+          <div class="relative inline-block">
+            <span aria-hidden="true" class="absolute -inset-3 bg-lime-400/25 blur-xl rounded-full -z-10"></span>
+            <span class="badge-free inline-flex items-center gap-2 text-[13px] font-bold text-lime-300 tracking-wide rounded-full px-4 py-1.5">
+              <span class="relative w-1.5 h-1.5 rounded-full bg-lime-400">
+                <span class="dot-ping" aria-hidden="true"></span>
+              </span>
+              Free For Families, Always
+            </span>
+          </div>
 
           <h1 class="font-display text-white text-[42px] sm:text-[52px] leading-[1.06] font-bold mt-6">
             Find A Support Worker Your Family Can <span class="text-lime-400">Trust</span>
