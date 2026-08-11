@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Local dev/screenshot output
+temporary screenshots/
+
+# Reference material (not part of the shipped site)
+dribbble.com_shots_*.png
+
+# Claude Code tooling (not site content)
+.agents/
+.claude/
+spec-writing/
+skills-lock.json
+
+# Artifact publish export (generated from index.html, not source of truth)
+artifact-index.html
+
+# OS cruft
+.DS_Store
