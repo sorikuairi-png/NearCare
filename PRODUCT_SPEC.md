@@ -176,7 +176,7 @@ Support workers are shown relevant third-party services (e.g. an accounting/tax 
 
 ## 7. Rules & behaviour
 
-- **The person being supported is never named or shown.** No photos, no identifying details of the person receiving care are ever captured or displayed — only the family/guardian/carer's own details and a description of the support needed.
+- **The person being supported has no dedicated field anywhere in the app.** There is no photo upload and no "name of the person receiving care" field — only the family/guardian/carer's own details and a description of the support needed. Free-text fields (support needs, notes, in-app messages) can't be stopped from mentioning that person incidentally; anything that looks like it does is flagged (a narrow, best-effort check — not a guarantee) and held for human review before it's shown to another user. This is the honest limit of what save-time screening can promise; it isn't a substitute for keeping the field itself out of the product.
 - **Resumes must never identify past clients.** A worker's resume may describe the *type* of work and experience, never a past family's identifying details.
 - **Credentials are reviewed, not self-declared.** Every mandatory compliance document is uploaded and reviewed before a profile goes live. (The exact wording used to describe this to families — "we verify" vs "you decide who to engage at your own risk" — is a legal decision still pending; see [Open Questions](#10-open-questions-for-the-user).)
 - **Expiry auto-hides a profile for the three compliance checks.** When the WWCC, NDIS Worker Screening, or police check's expiry date passes, that worker's profile is automatically hidden from search until it's renewed and re-verified. Workers are not relied upon to self-report a lapse. Whether this same auto-hide also applies to insurance or driver's licence is unsettled — see [Open Questions](#10-open-questions-for-the-user).
@@ -198,7 +198,7 @@ Support workers are shown relevant third-party services (e.g. an accounting/tax 
 - Does **not** supervise, manage, or mediate the caregiving relationship or any dispute that arises from it.
 - Does **not** use a swipe-style matching interface.
 - Does **not** use a single star "popularity contest" rating.
-- Does **not** capture or display any photo or identifying detail of the person being supported — ever.
+- Does **not** provide a photo upload or a dedicated field for the identity of the person being supported, anywhere — that door simply isn't opened. Does not guarantee free text can never incidentally mention them; see §7 for the screening/review approach that mitigates (not eliminates) that risk.
 - Is **not** an incident-management or mandatory-reporting system.
 - Does **not** handle in-app payments/invoicing for support services in this version (explicitly deferred).
 - Does **not** offer a multilingual interface in this version (backlog).
