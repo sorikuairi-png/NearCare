@@ -1,0 +1,845 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "NearCare",
+		"description": "Support Worker Connection App — connects NDIS families, guardians, and carers with independent support workers (ISWs). Discovery only.",
+		"author": "NearCare"
+	},
+	"settings": {
+		"title": "NearCare",
+		"tagline": "Find a support worker your family can trust"
+	},
+	"collections": [
+		{
+			"slug": "family_profiles",
+			"label": "Family Profiles",
+			"labelSingular": "Family Profile",
+			"description": "Families, guardians, and carers searching for a support worker. Never captures identifying details of the person being supported. Does not hold LAC/Support Coordinator contact details — families are recommended to loop their own coordinator in directly.",
+			"supports": ["drafts", "revisions"],
+			"routable": false,
+			"titleField": "contact_name",
+			"fields": [
+				{
+					"slug": "contact_name",
+					"label": "Contact Name",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "contact_phone",
+					"label": "Contact Phone",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "support_categories",
+					"label": "Support Categories",
+					"type": "multiSelect",
+					"required": true,
+					"validation": {
+						"options": ["personal_care", "community_access", "capacity_building"]
+					}
+				},
+				{ "slug": "support_needs_details", "label": "Support Needs — Details", "type": "text" },
+				{
+					"slug": "hours_required",
+					"label": "Hours Required",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "funding_type",
+					"label": "Funding Type",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"validation": { "options": ["self_managed", "plan_managed", "ndia_managed"] }
+				},
+				{
+					"slug": "postcode",
+					"label": "Postcode",
+					"type": "string",
+					"required": true,
+					"indexed": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{ "slug": "suburb", "label": "Suburb", "type": "string" },
+				{
+					"slug": "state",
+					"label": "State",
+					"type": "select",
+					"validation": { "options": ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"] }
+				},
+				{ "slug": "diagnoses_conditions", "label": "Diagnoses / Conditions", "type": "text" },
+				{ "slug": "worker_preferences", "label": "Worker Preferences", "type": "text" },
+				{ "slug": "additional_notes", "label": "Additional Notes", "type": "text" },
+				{
+					"slug": "has_support_coordinator",
+					"label": "Has a LAC or Support Coordinator",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "content_flagged",
+					"label": "Flagged For Review",
+					"type": "boolean",
+					"defaultValue": false,
+					"indexed": true
+				},
+				{ "slug": "content_flag_reason", "label": "Flag Reason", "type": "text" }
+			]
+		},
+		{
+			"slug": "worker_profiles",
+			"label": "Support Worker Profiles",
+			"labelSingular": "Support Worker Profile",
+			"description": "Independent support workers (ISWs). Visibility in family search is gated by review_status, compliance expiry dates, and subscription_status — enforced by application logic, not by this schema alone. Employment-structure-dependent fields (abn / subcontractor_details / provider_company_details) are conditionally required — enforced by a plugin hook, not by this schema.",
+			"supports": ["drafts", "revisions"],
+			"routable": false,
+			"titleField": "full_name",
+			"fields": [
+				{
+					"slug": "full_name",
+					"label": "Full Name",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{ "slug": "date_of_birth", "label": "Date of Birth", "type": "datetime", "required": true },
+				{
+					"slug": "contact_phone",
+					"label": "Contact Phone",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "postcode",
+					"label": "Postcode",
+					"type": "string",
+					"required": true,
+					"indexed": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{ "slug": "suburb", "label": "Suburb", "type": "string" },
+				{
+					"slug": "state",
+					"label": "State",
+					"type": "select",
+					"validation": { "options": ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"] }
+				},
+				{
+					"slug": "employment_structure",
+					"label": "Employment Structure",
+					"type": "select",
+					"required": true,
+					"validation": {
+						"options": ["independent_abn", "subcontractor", "employed_by_provider"]
+					}
+				},
+				{ "slug": "abn", "label": "ABN", "type": "string" },
+				{ "slug": "subcontractor_details", "label": "Subcontractor Details", "type": "text" },
+				{
+					"slug": "provider_company_details",
+					"label": "Provider Company Details",
+					"type": "text"
+				},
+				{
+					"slug": "years_experience",
+					"label": "Years of Experience",
+					"type": "integer",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "preferred_client_types",
+					"label": "Preferred Client Types",
+					"type": "multiSelect",
+					"required": true,
+					"validation": {
+						"options": [
+							"children",
+							"adults",
+							"seniors",
+							"complex_needs",
+							"physical_disability",
+							"psychosocial_disability",
+							"autism"
+						]
+					}
+				},
+				{
+					"slug": "preferred_age_ranges",
+					"label": "Preferred Client Age Ranges",
+					"type": "multiSelect",
+					"validation": { "options": ["0_17", "18_65", "65_plus"] }
+				},
+				{
+					"slug": "hours_available",
+					"label": "Hours Available",
+					"type": "text",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "resume",
+					"label": "Resume",
+					"type": "file",
+					"required": true,
+					"validation": { "allowedMimeTypes": ["application/pdf"] }
+				},
+				{
+					"slug": "liability_insurance_details",
+					"label": "Personal Liability Insurance Details",
+					"type": "text",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "drivers_licence",
+					"label": "Proof of Driver's Licence",
+					"type": "file",
+					"required": true,
+					"validation": { "allowedMimeTypes": ["application/pdf", "image/jpeg", "image/png"] }
+				},
+				{
+					"slug": "emergency_contact_name",
+					"label": "Emergency Contact Name",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "emergency_contact_phone",
+					"label": "Emergency Contact Phone",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "wwcc_number",
+					"label": "Working With Children Check Number",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "wwcc_expiry_date",
+					"label": "WWCC Expiry Date",
+					"type": "datetime",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "wwcc_document",
+					"label": "WWCC Document",
+					"type": "file",
+					"required": true,
+					"validation": { "allowedMimeTypes": ["application/pdf", "image/jpeg", "image/png"] }
+				},
+				{
+					"slug": "ndis_screening_number",
+					"label": "NDIS Worker Screening Number",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "ndis_screening_expiry_date",
+					"label": "NDIS Screening Expiry Date",
+					"type": "datetime",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "ndis_screening_document",
+					"label": "NDIS Screening Document",
+					"type": "file",
+					"required": true,
+					"validation": { "allowedMimeTypes": ["application/pdf", "image/jpeg", "image/png"] }
+				},
+				{
+					"slug": "police_check_number",
+					"label": "Police Check Number",
+					"type": "string",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "police_check_expiry_date",
+					"label": "Police Check Expiry Date",
+					"type": "datetime",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "police_check_document",
+					"label": "Police Check Document",
+					"type": "file",
+					"required": true,
+					"validation": { "allowedMimeTypes": ["application/pdf", "image/jpeg", "image/png"] }
+				},
+				{
+					"slug": "review_status",
+					"label": "Review Status",
+					"type": "select",
+					"required": true,
+					"defaultValue": "pending_review",
+					"indexed": true,
+					"validation": { "options": ["pending_review", "approved", "rejected"] }
+				},
+				{ "slug": "rejection_reason", "label": "Rejection Reason", "type": "text" },
+				{
+					"slug": "subscription_status",
+					"label": "Subscription Status",
+					"type": "select",
+					"required": true,
+					"defaultValue": "inactive",
+					"indexed": true,
+					"validation": { "options": ["inactive", "active", "past_due", "cancelled"] }
+				},
+				{
+					"slug": "subscription_renews_at",
+					"label": "Subscription Renews At",
+					"type": "datetime"
+				},
+				{
+					"slug": "content_flagged",
+					"label": "Flagged For Review",
+					"type": "boolean",
+					"defaultValue": false,
+					"indexed": true
+				},
+				{ "slug": "content_flag_reason", "label": "Flag Reason", "type": "text" }
+			]
+		},
+		{
+			"slug": "interests",
+			"label": "Expressed Interests",
+			"labelSingular": "Expressed Interest",
+			"description": "A family expressing interest in a support worker — the start of a connection. Exactly one per family/worker pair (enforced by a plugin hook, not by this schema); the parent record for that pair's messages, feedback, and reliability incidents.",
+			"supports": ["revisions"],
+			"routable": false,
+			"fields": [
+				{
+					"slug": "family",
+					"label": "Family",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "family_profiles" }
+				},
+				{
+					"slug": "worker",
+					"label": "Support Worker",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "worker_profiles" }
+				},
+				{
+					"slug": "interest_status",
+					"label": "Status",
+					"type": "select",
+					"required": true,
+					"defaultValue": "expressed",
+					"indexed": true,
+					"validation": { "options": ["expressed", "responded", "closed"] }
+				}
+			]
+		},
+		{
+			"slug": "messages",
+			"label": "Messages",
+			"labelSingular": "Message",
+			"description": "In-app chat between a family and a worker, scoped to one expressed interest. Personal contact details are never exchanged through this collection's fields. A plugin hook rejects new messages on an interest where an active block exists between the two parties.",
+			"supports": [],
+			"routable": false,
+			"fields": [
+				{
+					"slug": "interest",
+					"label": "Conversation",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "interests" }
+				},
+				{
+					"slug": "sender_role",
+					"label": "Sent By",
+					"type": "select",
+					"required": true,
+					"validation": { "options": ["family", "worker"] }
+				},
+				{
+					"slug": "body",
+					"label": "Message",
+					"type": "text",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "content_flagged",
+					"label": "Flagged For Review",
+					"type": "boolean",
+					"defaultValue": false,
+					"indexed": true
+				},
+				{ "slug": "content_flag_reason", "label": "Flag Reason", "type": "text" }
+			]
+		},
+		{
+			"slug": "feedback",
+			"label": "Feedback",
+			"labelSingular": "Feedback Entry",
+			"description": "Structured, multi-category feedback left after genuine engagement — never a single star rating. Gating on what counts as genuine engagement is enforced by application logic, not this schema.",
+			"supports": [],
+			"routable": false,
+			"fields": [
+				{
+					"slug": "interest",
+					"label": "Related Interest",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "interests" }
+				},
+				{
+					"slug": "rater_role",
+					"label": "Left By",
+					"type": "select",
+					"required": true,
+					"validation": { "options": ["family", "worker"] }
+				},
+				{
+					"slug": "reliability_rating",
+					"label": "Reliability (1-5)",
+					"type": "integer",
+					"required": true,
+					"validation": { "min": 1, "max": 5 }
+				},
+				{
+					"slug": "communication_rating",
+					"label": "Communication (1-5)",
+					"type": "integer",
+					"required": true,
+					"validation": { "min": 1, "max": 5 }
+				},
+				{
+					"slug": "punctuality_rating",
+					"label": "Punctuality (1-5)",
+					"type": "integer",
+					"required": true,
+					"validation": { "min": 1, "max": 5 }
+				},
+				{ "slug": "comment", "label": "Comment", "type": "text" }
+			]
+		},
+		{
+			"slug": "reliability_incidents",
+			"label": "Reliability Incidents",
+			"labelSingular": "Reliability Incident",
+			"description": "Cancellations and no-shows, tracked separately from quality feedback since it's a pattern issue rather than a quality one.",
+			"supports": [],
+			"routable": false,
+			"fields": [
+				{
+					"slug": "interest",
+					"label": "Related Interest",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "interests" }
+				},
+				{
+					"slug": "reported_by_role",
+					"label": "Reported By",
+					"type": "select",
+					"required": true,
+					"validation": { "options": ["family", "worker"] }
+				},
+				{
+					"slug": "incident_type",
+					"label": "Incident Type",
+					"type": "select",
+					"required": true,
+					"validation": { "options": ["cancellation", "no_show"] }
+				},
+				{ "slug": "occurred_at", "label": "Occurred At", "type": "datetime", "required": true },
+				{ "slug": "notes", "label": "Notes", "type": "text" }
+			]
+		},
+		{
+			"slug": "reports",
+			"label": "Reports",
+			"labelSingular": "Report",
+			"description": "A family or worker reporting the other party. Both participants are always identified (reporter_role says which side filed it — the other side is the one being reported), so a report can never name zero or two targets. A report can lead to a profile being suspended, or to an entry in the blocks collection.",
+			"supports": ["revisions"],
+			"routable": false,
+			"fields": [
+				{
+					"slug": "family",
+					"label": "Family",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "family_profiles" }
+				},
+				{
+					"slug": "worker",
+					"label": "Support Worker",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "worker_profiles" }
+				},
+				{
+					"slug": "reporter_role",
+					"label": "Filed By",
+					"type": "select",
+					"required": true,
+					"validation": { "options": ["family", "worker"] }
+				},
+				{
+					"slug": "reason",
+					"label": "Reason",
+					"type": "text",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{
+					"slug": "report_status",
+					"label": "Status",
+					"type": "select",
+					"required": true,
+					"defaultValue": "open",
+					"indexed": true,
+					"validation": { "options": ["open", "reviewed", "actioned"] }
+				},
+				{ "slug": "resolution_notes", "label": "Resolution Notes", "type": "text" }
+			]
+		},
+		{
+			"slug": "blocks",
+			"label": "Blocks",
+			"labelSingular": "Block",
+			"description": "An active or revoked block between a family and a worker. While active, a plugin hook prevents new messages between the pair; future search/matching must exclude blocked pairs from each other's results.",
+			"supports": ["revisions"],
+			"routable": false,
+			"fields": [
+				{
+					"slug": "family",
+					"label": "Family",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "family_profiles" }
+				},
+				{
+					"slug": "worker",
+					"label": "Support Worker",
+					"type": "reference",
+					"required": true,
+					"indexed": true,
+					"options": { "collection": "worker_profiles" }
+				},
+				{
+					"slug": "initiated_by_role",
+					"label": "Initiated By",
+					"type": "select",
+					"required": true,
+					"validation": { "options": ["family", "worker"] }
+				},
+				{
+					"slug": "block_status",
+					"label": "Status",
+					"type": "select",
+					"required": true,
+					"defaultValue": "active",
+					"indexed": true,
+					"validation": { "options": ["active", "revoked"] }
+				},
+				{ "slug": "reason", "label": "Reason", "type": "text" }
+			]
+		},
+		{
+			"slug": "notifications",
+			"label": "Notifications",
+			"labelSingular": "Notification",
+			"description": "In-app notification inbox entries (interest received, credential expiring, message received, search alert), delivered in-app and by email per the product spec. Exactly one of recipient_family/recipient_worker is set, matching recipient_role — enforced by a plugin hook, not by this schema.",
+			"supports": [],
+			"routable": false,
+			"fields": [
+				{
+					"slug": "event_type",
+					"label": "Event Type",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"validation": {
+						"options": [
+							"interest_received",
+							"credential_expiring",
+							"message_received",
+							"search_alert"
+						]
+					}
+				},
+				{
+					"slug": "recipient_role",
+					"label": "Recipient Type",
+					"type": "select",
+					"required": true,
+					"validation": { "options": ["family", "worker"] }
+				},
+				{
+					"slug": "recipient_family",
+					"label": "Recipient Family",
+					"type": "reference",
+					"indexed": true,
+					"options": { "collection": "family_profiles" }
+				},
+				{
+					"slug": "recipient_worker",
+					"label": "Recipient Support Worker",
+					"type": "reference",
+					"indexed": true,
+					"options": { "collection": "worker_profiles" }
+				},
+				{
+					"slug": "related_interest",
+					"label": "Related Interest",
+					"type": "reference",
+					"indexed": true,
+					"options": { "collection": "interests" }
+				},
+				{
+					"slug": "body",
+					"label": "Message",
+					"type": "text",
+					"required": true,
+					"validation": { "minLength": 1, "pattern": "\\S" }
+				},
+				{ "slug": "read_at", "label": "Read At", "type": "datetime" },
+				{
+					"slug": "email_sent",
+					"label": "Email Sent",
+					"type": "boolean",
+					"defaultValue": false
+				}
+			]
+		},
+		{
+			"slug": "posts",
+			"label": "Posts",
+			"labelSingular": "Post",
+			"supports": ["drafts", "revisions", "search", "seo"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": ["drafts", "revisions", "search"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": true,
+			"collections": ["posts"],
+			"terms": [
+				{
+					"slug": "general",
+					"label": "General"
+				},
+				{
+					"slug": "updates",
+					"label": "Updates"
+				}
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"terms": [
+				{
+					"slug": "starter",
+					"label": "Starter"
+				},
+				{
+					"slug": "example",
+					"label": "Example"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{ "type": "custom", "label": "Home", "url": "/" },
+				{ "type": "custom", "label": "How It Works", "url": "/how-it-works" },
+				{ "type": "custom", "label": "For Support Workers", "url": "/for-support-workers" },
+				{ "type": "custom", "label": "Safety & Verification", "url": "/safety-verification" },
+				{ "type": "custom", "label": "Contact", "url": "/contact" }
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Sidebar widget area",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				},
+				{
+					"type": "component",
+					"componentId": "core:categories",
+					"title": "Categories"
+				},
+				{
+					"type": "component",
+					"componentId": "core:recent-posts",
+					"title": "Recent Posts",
+					"settings": {
+						"count": 5
+					}
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is the about page. Edit it in the admin panel or replace this template with your own design.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome",
+					"excerpt": "Your first post. Replace this with your own content.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a starter post. The templates in this project show the basic patterns for querying and rendering EmDash content. Replace them with your own design.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What to do next",
+									"_key": "k3"
+								}
+							],
+							"_key": "k2"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Open the admin panel to add content, or edit the Astro pages in src/pages to change how content is displayed.",
+									"_key": "k5"
+								}
+							],
+							"_key": "k4"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": ["general"],
+					"tag": ["starter", "example"]
+				}
+			}
+		]
+	}
+}
