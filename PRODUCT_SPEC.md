@@ -1,6 +1,6 @@
 # Product Spec — Support Worker Connection App
 
-**Status**: Draft · **Created**: 2026-08-11 · **Brief**: `PLANNING.md` (Support Worker Connection App — Project Plan)
+**Status**: Draft · **Created**: 2026-08-11 · **Updated**: 2026-09-11 (LAC/Support Coordinator notification synced to the decision made in `HOW_IT_WORKS_PAGE_SPEC.md` §2 — see Open Question #2) · **Brief**: `PLANNING.md` (Support Worker Connection App — Project Plan)
 
 ---
 
@@ -16,7 +16,7 @@ Families looking for independent support workers currently have no dedicated, tr
 
 - **Family / Guardian / Carer** — creates a profile describing the support needed, searches for and reviews workers, and expresses interest in the ones who look right.
 - **Support Worker (Independent Support Worker / ISW)** — creates a verified profile, becomes visible to searching families, and gets notified when someone is interested.
-- **LAC or Support Coordinator** — automatically told when a family they support expresses interest in a worker, so the arrangement can be formalised in the NDIS plan. Exactly how they receive this and whether they ever log into the app themselves is unsettled — see [Open Questions](#10-open-questions-for-the-user).
+- **LAC or Support Coordinator** — not contacted by the app directly. Once a family has connected with a worker, they're recommended to loop their own LAC or Support Coordinator in themselves so the arrangement can be formalised in the NDIS plan. NearCare doesn't hold LAC/Support Coordinator contact details and doesn't notify them on a family's behalf (decided in `HOW_IT_WORKS_PAGE_SPEC.md` §2). Whether they ever log into the app themselves directly is unsettled — see [Open Questions](#10-open-questions-for-the-user).
 
 ## 4. User journeys
 
@@ -48,15 +48,15 @@ You sign up as a family, guardian, or carer. You describe the support needed, th
 
 ### Journey 3 — Family expresses interest and connects (P1) 🎯 MVP
 
-Having found a worker who looks right, you select "Express Interest" — there's no open-ended cold messaging. The worker is notified that a family is interested. From here, a limited in-app chat opens so you can sort out details; personal phone numbers or emails aren't exchanged up front. If you have a LAC or Support Coordinator on record, they're automatically notified with the details so the arrangement can be formalised in your NDIS plan. If you don't have one, you're shown an alternative pathway (a template you can send, and information on managing the process yourself). If either of you chooses to move the conversation off the app (e.g. to phone or WhatsApp), that's your own choice and at your own risk.
+Having found a worker who looks right, you select "Express Interest" — there's no open-ended cold messaging. The worker is notified that a family is interested. From here, a limited in-app chat opens so you can sort out details; personal phone numbers or emails aren't exchanged up front. Once you've connected, if you have a LAC or Support Coordinator on record, you're reminded to loop them in yourself so the arrangement can be formalised in your NDIS plan — NearCare doesn't hold their contact details or notify them automatically. If you don't have one, you're shown an alternative pathway (a template you can send, and information on managing the process yourself). If either of you chooses to move the conversation off the app (e.g. to phone or WhatsApp), that's your own choice and at your own risk.
 
 **Why this priority**: expressing interest and connecting is the entire point of a successful search — without it, the app is a directory, not a marketplace.
 
-**Done when**: a family can express interest in a worker, the worker is notified, both sides can exchange at least one in-app message, and the correct next step (LAC notification or the no-LAC alternative) is shown.
+**Done when**: a family can express interest in a worker, the worker is notified, both sides can exchange at least one in-app message, and the correct next step (a reminder to loop in their own LAC/Support Coordinator, or the no-LAC alternative) is shown.
 
 **Acceptance**:
 - *Given* a family selects "Express Interest," *when* the action completes, *then* the worker receives a notification and the family sees confirmation.
-- *Given* a family with a LAC/Support Coordinator on record expresses interest, *when* the action completes, *then* that person is notified with the interest details.
+- *Given* a family has a LAC/Support Coordinator on record, *when* they connect with a worker, *then* they're shown a reminder to loop that person in themselves — NearCare does not contact the LAC/Support Coordinator on the family's behalf.
 - *Given* a family without a LAC/Support Coordinator expresses interest, *when* the action completes, *then* they are shown the alternative self-managing pathway.
 - *Given* an interest has been expressed, *when* either party opens the conversation, *then* they can send and receive in-app messages without having shared personal contact details.
 
@@ -132,7 +132,7 @@ Support workers are shown relevant third-party services (e.g. an accounting/tax 
 - **Worker Profile (detail view)**: full profile as visible to families
 - **Express Interest confirmation**
 - **Messages / In-app Chat**
-- **LAC/Support Coordinator notified confirmation**, or **no-LAC alternative pathway** (template + self-managing resources)
+- **Loop-in-your-coordinator reminder** (shown after connecting, when the family has a LAC/Support Coordinator on record), or **no-LAC alternative pathway** (template + self-managing resources)
 - **Notifications inbox**
 - **Feedback form** (after genuine engagement)
 - **Report / Block a worker**
@@ -162,7 +162,7 @@ Support workers are shown relevant third-party services (e.g. an accounting/tax 
 
 **Search & matching** — search-and-suggest by local area; ranked (not hard-filtered) results; fit indicator shown per result.
 
-**Connection** — "Express Interest" action; in-app messaging; automatic LAC/Support Coordinator notification; alternative self-managing pathway for families without one.
+**Connection** — "Express Interest" action; in-app messaging; a post-connection reminder for families to loop in their own LAC/Support Coordinator (not an automatic notification — NearCare doesn't hold that contact information); alternative self-managing pathway for families without one.
 
 **Safety** — reporting; blocking; profile suspension; two-way flagging (workers can flag families too); links out to DCJ/NDIS authorities for serious incidents.
 
@@ -213,7 +213,7 @@ Support workers are shown relevant third-party services (e.g. an accounting/tax 
 - As a family, see a ranked list of workers and understand why each one is ranked where it is.
 - As a family, view a worker's experience, preferences, and resume before deciding anything.
 - As a family, express interest in a worker without giving out my phone number first.
-- As a family with a LAC or Support Coordinator, know they'll be automatically notified when I express interest.
+- As a family with a LAC or Support Coordinator, be reminded to loop them in myself once I've connected with a worker — NearCare doesn't contact them automatically.
 - As a family without a LAC or Support Coordinator, be given a clear way to sort that out myself.
 - As a support worker, build a profile, upload my compliance documents, and know exactly what's verified and what's expiring.
 - As a support worker, know my profile will automatically disappear from search if one of my checks lapses — and understand why.
@@ -226,7 +226,7 @@ Support workers are shown relevant third-party services (e.g. an accounting/tax 
 ## 10. Open Questions for the User
 
 1. **"Local area" definition** — is a search based on a radius (and if so, what default/adjustable distance?) or postcode matching? How should the experience differ in regional/remote areas where very few or zero workers may be available nearby?
-2. **LAC/Support Coordinator notification — ready for v1?** This is flagged in the brief as needing legal confirmation that it doesn't push the platform into regulated NDIS provider territory. Should this feature ship in the MVP as designed, launch in a lighter form (e.g. just a resource link, no automatic notification) until legal sign-off, or wait entirely?
+2. ~~LAC/Support Coordinator notification — ready for v1?~~ → **Resolved** (see `HOW_IT_WORKS_PAGE_SPEC.md` §2): dropped the automatic-notification concept for now — kept in the background as a possible future feature, not built. Families are instead shown a reminder to loop in their own LAC/Support Coordinator themselves once they've connected with a worker. NearCare doesn't hold LAC/Support Coordinator contact details and doesn't act on a family's behalf, which sidesteps the original legal-confirmation concern (regulated NDIS provider territory) for this version.
 3. **The no-LAC alternative pathway** — what exactly should a family without a LAC/Support Coordinator see? A template email they send themselves, a fully drafted resource page, both — and is anything auto-sent on their behalf, or is it always handed to them to action?
 4. **Funding type enforcement** — when a family's funding type (self-managed / plan-managed / NDIA-managed) restricts who they can legally engage, should the app filter out ineligible workers from their search entirely, just warn/flag them, or simply display the information and leave the decision to the family?
 5. **Minimum worker age** — is there a minimum age to register as a support worker, given some compliance checks (e.g. Working With Children) may have age-related nuances for under-18s?
