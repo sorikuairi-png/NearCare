@@ -1,0 +1,38 @@
+---
+/**
+ * The compliance-check row that sits under the hero.
+ *
+ * Deliberately a component rather than inline markup: the locked
+ * HOW_IT_WORKS_PAGE_SPEC (§5) requires this same strip to repeat on the
+ * How It Works page so that page stands alone, and the wording of these
+ * four checks is a content rule — it must not drift between pages.
+ *
+ * It carries its own solid dark band. Inline in the hero it used to be
+ * green-950 at 40% opacity, which only worked because the hero gradient
+ * sat behind it; standing on its own that washes out to grey against a
+ * white page. Solid green-950 lands on roughly the same colour the blend
+ * produced, and now the strip is safe to drop onto any background —
+ * which is the same call HOW_IT_WORKS_PAGE_BUILD_SPEC §7 made for it.
+ */
+const checks = [
+	"Working With Children Check",
+	"NDIS Worker Screening",
+	"Police Check",
+	"Public Liability Insurance",
+];
+---
+
+<div class="relative z-10 border-t border-white/10 bg-green-950 grain overflow-hidden">
+	<div class="max-w-7xl mx-auto px-6 lg:px-10 py-8 flex flex-col items-center gap-4">
+		<p class="text-white/40 text-[12px] font-semibold uppercase tracking-wide">
+			Every profile is document-checked against
+		</p>
+		<div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-4">
+			{
+				checks.map((check) => (
+					<span class="font-display font-semibold text-white/50 text-[15px] tracking-wide">{check}</span>
+				))
+			}
+		</div>
+	</div>
+</div>

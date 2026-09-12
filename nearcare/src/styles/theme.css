@@ -57,7 +57,14 @@ h1, h2, h3, .font-display { font-family: 'Fraunces', serif; font-optical-sizing:
 
 /* ---- signature motif: concentric "proximity ping" rings, radiating from
    a point behind the hero — the one place this page spends its boldness.
-   Pure border rings on transform/opacity only, staggered and looping. ---- */
+
+   Motion policy (WCAG 2.2.2 Pause, Stop, Hide): this animation starts
+   automatically, so it must not run past five seconds. It plays ONCE as
+   part of the page's arrival choreography — last ring starts at 1.2s and
+   runs 3.2s, so all motion is finished by 4.4s and the page then sits
+   still. After that the ping is user-initiated only: focusing or typing
+   in the postcode search replays it (see .ping-rings.replay below), which
+   is exempt from 2.2.2 and ties the motif to the action it stands for. ---- */
 .ping-rings {
   position: absolute;
   inset: 0;
@@ -67,14 +74,23 @@ h1, h2, h3, .font-display { font-family: 'Fraunces', serif; font-optical-sizing:
   position: absolute;
   inset: 0;
   margin: auto;
+  width: 30%;
+  height: 30%;
   border-radius: 9999px;
   border: 1.5px solid rgba(194, 226, 161, 0.55);
-  animation: pingOut 4.8s cubic-bezier(.16,1,.3,1) infinite;
+  animation: pingOut 3.2s cubic-bezier(.16,1,.3,1) 1 both;
   opacity: 0;
 }
-.ping-rings span:nth-child(1) { width: 30%; height: 30%; animation-delay: 0s; }
-.ping-rings span:nth-child(2) { width: 30%; height: 30%; animation-delay: 1.6s; }
-.ping-rings span:nth-child(3) { width: 30%; height: 30%; animation-delay: 3.2s; border-color: rgba(201, 116, 74, 0.45); }
+.ping-rings span:nth-child(1) { animation-delay: 0s; }
+.ping-rings span:nth-child(2) { animation-delay: 0.6s; }
+.ping-rings span:nth-child(3) { animation-delay: 1.2s; border-color: rgba(201, 116, 74, 0.45); }
+
+/* Replay: script adds .reset, forces a reflow, then removes it. Clearing
+   the animation entirely is what actually rewinds it — re-asserting the
+   same animation-name on a finished animation does nothing. */
+.ping-rings.reset span {
+  animation: none;
+}
 @keyframes pingOut {
   0% { transform: scale(1); opacity: 0; }
   8% { opacity: 1; }
@@ -191,10 +207,15 @@ a, button { -webkit-tap-highlight-color: transparent; }
   * { scroll-behavior: auto !important; }
 }
 
-.float-slow { animation: floatY 6s ease-in-out infinite; }
+/* Same motion policy as .ping-rings: two settling bobs (4.4s total), then
+   the card comes to rest at translateY(0) rather than drifting forever. */
+.float-slow { animation: floatY 2.2s ease-in-out 2 both; }
 @keyframes floatY {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .float-slow { animation: none; }
 }
 
 /* ---- "Free For Families" badge: bright, contained glow + pulsing dot ---- */
@@ -206,12 +227,13 @@ a, button { -webkit-tap-highlight-color: transparent; }
     0 0 22px -4px rgba(194,226,161,0.55),
     0 10px 22px -12px rgba(194,226,161,0.4);
 }
+/* Three pings (4.2s total), then still — same motion policy as above. */
 .badge-free .dot-ping {
   position: absolute;
   inset: 0;
   border-radius: 9999px;
   background: #c2e2a1;
-  animation: dotPing 2.2s cubic-bezier(0,0,0.2,1) infinite;
+  animation: dotPing 1.4s cubic-bezier(0,0,0.2,1) 3 both;
 }
 @keyframes dotPing {
   0% { transform: scale(1); opacity: 0.8; }

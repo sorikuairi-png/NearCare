@@ -1,0 +1,49 @@
+---
+/**
+ * A resource/guide preview.
+ *
+ * The artwork panel is drawn inline rather than pulled from placehold.co:
+ * no external image request, nothing to break offline, and it lets the
+ * cards carry a quiet echo of the hero's concentric-ring motif instead of
+ * a grey box with the word "Guide" in it. Swap `<div class="guide-art">`
+ * for a real <Image> once these become actual posts.
+ */
+interface Props {
+	title: string;
+	byline: string;
+	date: string;
+	tone: "clay" | "forest";
+	href?: string;
+}
+
+const { title, byline, date, tone, href = "#" } = Astro.props;
+
+const surface =
+	tone === "clay"
+		? "bg-gradient-to-br from-clay-400 to-clay-600"
+		: "bg-gradient-to-br from-green-700 to-green-950";
+const ring = tone === "clay" ? "rgba(255,255,255,0.30)" : "rgba(194,226,161,0.30)";
+---
+
+<a
+	href={href}
+	class="blog-card block group focus-visible:outline focus-visible:outline-2 focus-visible:outline-green-900 rounded-2xl"
+>
+	<div class:list={["rounded-2xl overflow-hidden aspect-[4/3] relative", surface]}>
+		<svg
+			class="absolute inset-0 w-full h-full"
+			viewBox="0 0 100 75"
+			preserveAspectRatio="xMidYMid slice"
+			aria-hidden="true"
+		>
+			<g fill="none" stroke={ring} stroke-width="1">
+				<circle cx="50" cy="40" r="10"></circle>
+				<circle cx="50" cy="40" r="20"></circle>
+				<circle cx="50" cy="40" r="30"></circle>
+			</g>
+			<circle cx="50" cy="40" r="4" fill={ring}></circle>
+		</svg>
+	</div>
+	<p class="font-display font-semibold text-ink-900 mt-4 text-[15px] leading-snug">{title}</p>
+	<p class="text-ink-400 text-[13px] mt-2">By {byline} · {date}</p>
+</a>

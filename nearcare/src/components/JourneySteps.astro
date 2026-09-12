@@ -1,0 +1,75 @@
+---
+/**
+ * The four "why NearCare" items, threaded onto a single line.
+ *
+ * The line is the point: these four roughly follow the real family flow
+ * (rank → verify → talk → hand off), so a traced path encodes something
+ * true rather than decorating a grid. The final node is clay-toned because
+ * it is the human hand-off — the only step NearCare doesn't do for you.
+ */
+interface Step {
+	title: string;
+	body: string;
+	/** Inline SVG path data for the node glyph. */
+	paths: string[];
+	/** The closing step is warm-toned; the mechanical ones are cool. */
+	tone?: "cool" | "warm";
+}
+
+const steps: Step[] = [
+	{
+		title: "Fit indicator",
+		body: "See exactly why a worker is ranked where they are — never a black box.",
+		paths: ["M3 17l6-6 4 4 8-8M21 7v6h-6"],
+	},
+	{
+		title: "Verified credentials",
+		body: "Every WWCC, NDIS Worker Screening, and police check is reviewed — never just self-reported.",
+		paths: ["M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z", "M14 2v6h6M9 13h6M9 17h6"],
+	},
+	{
+		title: "In-app messaging",
+		body: "Sort out details safely before you ever share a phone number.",
+		paths: ["M4 19.5A2.5 2.5 0 016.5 17H20M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5z"],
+	},
+	{
+		title: "Loop in your support coordinator",
+		body: "Found the right fit? We'll recommend you loop in your LAC or Support Coordinator so they can help formalise things.",
+		paths: ["M12 2l7 3v6c0 5-3.4 8.7-7 10-3.6-1.3-7-5-7-10V5z"],
+		tone: "warm",
+	},
+];
+---
+
+<ol class="journey-line flex flex-col gap-8 sm:gap-10 mt-10 list-none">
+	{
+		steps.map((step) => (
+			<li class="journey-node flex gap-5">
+				<span
+					class:list={[
+						"shrink-0 grid place-items-center w-11 h-11 rounded-full ring-4 ring-white",
+						step.tone === "warm" ? "bg-clay-300" : "bg-mist-100",
+					]}
+				>
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke={step.tone === "warm" ? "#a85c37" : "#004743"}
+						stroke-width="2"
+						aria-hidden="true"
+					>
+						{step.paths.map((d) => (
+							<path d={d} />
+						))}
+					</svg>
+				</span>
+				<div>
+					<h3 class="font-display font-semibold text-ink-900 text-[19px]">{step.title}</h3>
+					<p class="text-ink-400 text-[14px] mt-1.5 max-w-sm">{step.body}</p>
+				</div>
+			</li>
+		))
+	}
+</ol>

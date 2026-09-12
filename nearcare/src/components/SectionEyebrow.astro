@@ -1,0 +1,28 @@
+---
+/**
+ * Small uppercase label that opens each section, with a leading icon.
+ * Used three times on the homepage — extracted so the icon sizing, tracking
+ * and colour stay identical wherever a section is introduced.
+ */
+interface Props {
+	/** Which glyph to show. Each maps to an inline SVG path below. */
+	icon: "star" | "pin" | "shield";
+	label: string;
+}
+
+const { icon, label } = Astro.props;
+
+const paths: Record<Props["icon"], string[]> = {
+	star: ["M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.4 5.7 21l2.3-7.2-6-4.6h7.6z"],
+	pin: ["M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"],
+	shield: ["M12 2l7 3v6c0 5-3.4 8.7-7 10-3.6-1.3-7-5-7-10V5z"],
+};
+---
+
+<span class="inline-flex items-center gap-2 text-[13px] font-bold text-green-800 uppercase tracking-wide">
+	<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#004743" stroke-width="2.5" aria-hidden="true">
+		{paths[icon].map((d) => <path d={d} />)}
+		{icon === "pin" && <circle cx="12" cy="10" r="3" />}
+	</svg>
+	{label}
+</span>

@@ -1,0 +1,77 @@
+---
+/**
+ * Support-worker specialisations with a nearby count.
+ *
+ * The counts are placeholder figures carried over from the locked design
+ * reference — they are NOT read from worker_profiles yet. When search is
+ * wired up these become a real query; until then they stay in one place so
+ * there is a single spot to swap, not four scattered literals.
+ */
+interface Tile {
+	label: string;
+	count: number;
+	paths: string[];
+	tone: "neutral" | "lime" | "clay";
+}
+
+const tiles: Tile[] = [
+	{
+		label: "Personal Care",
+		count: 63,
+		tone: "neutral",
+		paths: ["M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0", "M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"],
+	},
+	{ label: "Community Access", count: 42, tone: "lime", paths: ["M3 11l18-8-8 18-2-8-8-2z"] },
+	{
+		label: "Domestic Assistance",
+		count: 37,
+		tone: "neutral",
+		paths: ["M3 9l9-6 9 6-9 6-9-6z", "M3 9v6l9 6 9-6V9"],
+	},
+	{ label: "Behaviour Support", count: 18, tone: "clay", paths: ["M12 20V10M18 20V4M6 20v-4"] },
+];
+
+const surface: Record<Tile["tone"], string> = {
+	neutral: "bg-mist-100",
+	lime: "bg-lime-400",
+	clay: "bg-clay-300",
+};
+const chip: Record<Tile["tone"], string> = {
+	neutral: "bg-white",
+	lime: "bg-white/70",
+	clay: "bg-white/70",
+};
+const titleTone: Record<Tile["tone"], string> = {
+	neutral: "text-ink-900",
+	lime: "text-green-900",
+	clay: "text-ink-900",
+};
+const countTone: Record<Tile["tone"], string> = {
+	neutral: "text-ink-400",
+	lime: "text-green-900/70",
+	clay: "text-ink-900/60",
+};
+const strokeTone: Record<Tile["tone"], string> = {
+	neutral: "#004743",
+	lime: "#004743",
+	clay: "#a85c37",
+};
+---
+
+<div class="grid grid-cols-2 gap-4 mt-8">
+	{
+		tiles.map((tile) => (
+			<div tabindex="0" class:list={["tile-card rounded-2xl p-5", surface[tile.tone]]}>
+				<span class:list={["grid place-items-center w-9 h-9 rounded-lg", chip[tile.tone]]}>
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={strokeTone[tile.tone]} stroke-width="2" aria-hidden="true">
+						{tile.paths.map((d) => (
+							<path d={d} />
+						))}
+					</svg>
+				</span>
+				<p class:list={["font-display font-semibold mt-3 text-[15px]", titleTone[tile.tone]]}>{tile.label}</p>
+				<p class:list={["text-[13px]", countTone[tile.tone]]}>{tile.count} Available Nearby</p>
+			</div>
+		))
+	}
+</div>
