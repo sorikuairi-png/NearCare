@@ -1,13 +1,12 @@
 ---
 import { getMenu, getSiteSettings } from "emdash";
 import {
-	WidgetArea,
 	EmDashHead,
 	EmDashBodyStart,
 	EmDashBodyEnd,
 } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
-import LiveSearch from "emdash/ui/search";
+import "../styles/theme.css";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
 
 interface Props {
@@ -26,6 +25,7 @@ const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}
 const pageDescription = description ?? siteTagline;
 
 const menu = await getMenu("primary");
+const currentPath = Astro.url.pathname;
 
 const pageCtx = createPublicPageContext({
 	Astro,
@@ -49,38 +49,188 @@ const pageCtx = createPublicPageContext({
 		<title>{fullTitle}</title>
 		{pageDescription && <meta name="description" content={pageDescription} />}
 		{canonical && <link rel="canonical" href={canonical} />}
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<script is:inline src="https://cdn.tailwindcss.com"></script>
+		<script is:inline>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: {
+							green: {
+								950: '#012b28',
+								900: '#004743',
+								800: '#0a5850',
+								700: '#0f6b60',
+								600: '#177566',
+							},
+							lime: {
+								300: '#e2f2c2',
+								400: '#c2e2a1',
+								500: '#a8cf83',
+								600: '#8fb968',
+							},
+							ink: {
+								900: '#0b201d',
+								600: '#4b5f5c',
+								400: '#7c8f8b',
+							},
+							mist: {
+								100: '#eef5f1',
+								200: '#e2ede7',
+							},
+						},
+						fontFamily: {
+							display: ['Sora', 'sans-serif'],
+							body: ['Inter', 'sans-serif'],
+						},
+					},
+				},
+			};
+		</script>
+		<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+
 		<EmDashHead page={pageCtx} />
 	</head>
-	<body>
+	<body class="bg-white text-ink-900 font-body antialiased">
 		<EmDashBodyStart page={pageCtx} />
 
-		<header>
-			<nav>
-				<a href="/">
-					{siteLogo
-						? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} style="height:48px;width:auto;margin:-8px 0;display:block;" />
-						: siteTitle
-					}
-				</a>
-				{
-					menu?.items.map((item) => (
-						<a href={item.url} target={item.target}>
-							{item.label}
+		<svg width="0" height="0" class="absolute" aria-hidden="true">
+			<defs>
+				<clipPath id="blobClip" clipPathUnits="objectBoundingBox">
+					<path d="M0.8025,0.135 C0.9125,0.2 0.9575,0.345 0.9475,0.475 C0.9375,0.615 0.895,0.76 0.7775,0.845 C0.6575,0.93 0.4875,0.945 0.36,0.88 C0.2325,0.815 0.15,0.6775 0.1225,0.5325 C0.095,0.3825 0.1175,0.22 0.24,0.135 C0.3675,0.0475 0.52,0.065 0.655,0.08 C0.705,0.085 0.755,0.105 0.8025,0.135 Z" />
+				</clipPath>
+				<clipPath id="cloverClip" clipPathUnits="objectBoundingBox">
+					<path d="M0.5000,0.2400 C0.6753,0.1405 0.8595,0.3247 0.7600,0.5000 C0.8595,0.6753 0.6753,0.8595 0.5000,0.7600 C0.3247,0.8595 0.1405,0.6753 0.2400,0.5000 C0.1405,0.3247 0.3247,0.1405 0.5000,0.2400 Z" />
+				</clipPath>
+			</defs>
+		</svg>
+
+		<!-- ============ TOP BAR ============ -->
+		<header class="relative bg-green-900 grain overflow-hidden">
+			<div class="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
+				<nav class="flex items-center justify-between py-6">
+					<a
+						href="/"
+						class="flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime-400 rounded-md"
+						aria-label={`${siteTitle} home`}
+					>
+						{siteLogo ? (
+							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} style="height:32px;width:auto;display:block;" />
+						) : (
+							<>
+								<span class="grid place-items-center w-9 h-9 rounded-full bg-white/10 border border-white/20">
+									<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c2e2a1" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M21 21l-5.2-5.2"/></svg>
+								</span>
+								<span class="font-display font-bold text-lg text-white">Near<span class="bg-lime-400 text-green-900 px-1.5 py-0.5 rounded-md ml-0.5">Care</span></span>
+							</>
+						)}
+					</a>
+
+					<ul class="hidden lg:flex items-center gap-9 text-[15px] text-white/85 font-medium">
+						{menu?.items.map((item) => (
+							<li>
+								<a
+									href={item.url}
+									target={item.target}
+									class={item.url === currentPath ? "nav-link-current font-semibold" : "nav-link"}
+									aria-current={item.url === currentPath ? "page" : undefined}
+								>
+									{item.label}
+								</a>
+							</li>
+						))}
+					</ul>
+
+					<div class="hidden lg:flex items-center gap-3">
+						<a href="#" class="btn-ghost text-white text-sm font-semibold border border-white/30 rounded-full px-5 py-2.5">I'm a Support Worker</a>
+						<a href="#" class="btn-white flex items-center gap-2 bg-white text-green-900 text-sm font-semibold rounded-full px-5 py-2.5">
+							<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#004743" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+							Sign In
 						</a>
-					))
-				}
-				<LiveSearch placeholder="Search..." collections={["posts", "pages"]} />
-			</nav>
+					</div>
+
+					<button id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu" class="lg:hidden grid place-items-center w-10 h-10 rounded-full border border-white/25 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime-400 outline-offset-2">
+						<svg id="menuIconOpen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+						<svg id="menuIconClose" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden"><path d="M6 6l12 12M18 6L6 18"/></svg>
+					</button>
+				</nav>
+
+				<div id="mobileMenu" class="lg:hidden hidden pb-8">
+					<ul class="flex flex-col gap-1 text-white/90 font-medium text-[15px]">
+						{menu?.items.map((item) => (
+							<li>
+								<a
+									href={item.url}
+									target={item.target}
+									class={item.url === currentPath ? "block py-2.5 border-b border-white/10 text-white font-semibold" : "block py-2.5 border-b border-white/10"}
+									aria-current={item.url === currentPath ? "page" : undefined}
+								>
+									{item.label}
+								</a>
+							</li>
+						))}
+					</ul>
+					<div class="flex items-center gap-3 mt-5">
+						<a href="#" class="btn-ghost flex-1 text-center text-white text-sm font-semibold border border-white/30 rounded-full px-5 py-2.5">I'm a Support Worker</a>
+						<a href="#" class="btn-white flex-1 flex items-center justify-center gap-2 bg-white text-green-900 text-sm font-semibold rounded-full px-5 py-2.5">
+							<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#004743" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+							Sign In
+						</a>
+					</div>
+				</div>
+			</div>
 		</header>
 
 		<main>
 			<slot />
 		</main>
 
-		<footer>
-			<WidgetArea name="sidebar" />
+		<!-- ============ FOOTER ============ -->
+		<footer class="bg-green-900 relative overflow-hidden grain">
+			<div class="max-w-7xl mx-auto px-6 lg:px-10 py-14 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+				<a href="/" class="flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime-400 rounded-md">
+					<span class="grid place-items-center w-8 h-8 rounded-full bg-white/10 border border-white/20">
+						<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c2e2a1" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M21 21l-5.2-5.2"/></svg>
+					</span>
+					<span class="font-display font-bold text-white">Near<span class="bg-lime-400 text-green-900 px-1.5 py-0.5 rounded-md ml-0.5">Care</span></span>
+				</a>
+				<p class="text-white/50 text-[13px]">© 2026 {siteTitle}. A discovery service — we never employ workers, handle payments, or supervise care.</p>
+				<div class="flex items-center gap-6 text-[13px] text-white/60">
+					<a href="#" class="nav-link">Privacy</a>
+					<a href="#" class="nav-link">Terms</a>
+					<a href="#" class="nav-link">Safety Resources</a>
+					<a href="#" class="nav-link">Contact</a>
+				</div>
+			</div>
 		</footer>
 
 		<EmDashBodyEnd page={pageCtx} />
+
+		<script is:inline>
+			// Entrance animation is load-triggered (not scroll-gated) so content is
+			// never dependent on JS/viewport timing to become visible.
+			requestAnimationFrame(() => {
+				document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+			});
+
+			const menuToggle = document.getElementById('menuToggle');
+			const mobileMenu = document.getElementById('mobileMenu');
+			const iconOpen = document.getElementById('menuIconOpen');
+			const iconClose = document.getElementById('menuIconClose');
+			menuToggle?.addEventListener('click', () => {
+				const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+				menuToggle.setAttribute('aria-expanded', String(!isOpen));
+				menuToggle.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
+				mobileMenu.classList.toggle('hidden', isOpen);
+				iconOpen.classList.toggle('hidden', !isOpen);
+				iconClose.classList.toggle('hidden', isOpen);
+			});
+		</script>
 	</body>
 </html>
