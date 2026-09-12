@@ -16,7 +16,7 @@ body {
   background: #ffffff;
   color: #0b201d;
 }
-h1, h2, h3, .font-display { font-family: 'Sora', sans-serif; letter-spacing: -0.03em; }
+h1, h2, h3, .font-display { font-family: 'Fraunces', serif; font-optical-sizing: auto; letter-spacing: -0.01em; }
 
 ::selection { background: #c2e2a1; color: #012b28; }
 
@@ -47,6 +47,61 @@ h1, h2, h3, .font-display { font-family: 'Sora', sans-serif; letter-spacing: -0.
 /* ---- organic blob clip-path for illustrative portraits ---- */
 .blob-mask {
   clip-path: url(#blobClip);
+}
+
+/* ---- map-pin clip-path: the hero portrait sits inside a location pin,
+   literalising "Near"Care rather than a generic photo shape ---- */
+.pin-mask {
+  clip-path: url(#pinClip);
+}
+
+/* ---- signature motif: concentric "proximity ping" rings, radiating from
+   a point behind the hero — the one place this page spends its boldness.
+   Pure border rings on transform/opacity only, staggered and looping. ---- */
+.ping-rings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ping-rings span {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(194, 226, 161, 0.55);
+  animation: pingOut 4.8s cubic-bezier(.16,1,.3,1) infinite;
+  opacity: 0;
+}
+.ping-rings span:nth-child(1) { width: 30%; height: 30%; animation-delay: 0s; }
+.ping-rings span:nth-child(2) { width: 30%; height: 30%; animation-delay: 1.6s; }
+.ping-rings span:nth-child(3) { width: 30%; height: 30%; animation-delay: 3.2s; border-color: rgba(201, 116, 74, 0.45); }
+@keyframes pingOut {
+  0% { transform: scale(1); opacity: 0; }
+  8% { opacity: 1; }
+  100% { transform: scale(3.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ping-rings span { animation: none; opacity: 0; }
+}
+
+/* ---- journey line: connects the four "why NearCare" items into a single
+   traced path instead of a disconnected icon grid — each node is a stop,
+   the line is the thread of one search. ---- */
+.journey-line {
+  position: relative;
+}
+.journey-line::before {
+  content: '';
+  position: absolute;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  left: 1.35rem;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(0,71,67,0.18), rgba(201,116,74,0.28));
+}
+.journey-node {
+  position: relative;
+  z-index: 1;
 }
 
 /* ---- layered, colour-tinted shadows (never flat shadow-md) ---- */
@@ -113,6 +168,13 @@ h1, h2, h3, .font-display { font-family: 'Sora', sans-serif; letter-spacing: -0.
 .search-field:focus-within {
   box-shadow: 0 0 0 3px rgba(194,226,161,0.55);
 }
+
+/* ---- need-chip: small pill tags (replaces plain inline text links) ---- */
+.need-chip {
+  transition: transform 0.3s cubic-bezier(.16,1,.3,1), background-color 0.25s ease, border-color 0.25s ease;
+}
+.need-chip:hover { transform: translateY(-2px); border-color: rgba(194,226,161,0.7); background-color: rgba(255,255,255,0.08); }
+.need-chip:focus-visible { outline: 2px solid #c2e2a1; outline-offset: 2px; }
 
 a, button { -webkit-tap-highlight-color: transparent; }
 
